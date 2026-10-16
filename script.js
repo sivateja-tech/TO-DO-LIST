@@ -496,6 +496,7 @@
   function renderProgress() {
     const total = state.tasks.length;
     const completed = state.tasks.filter((t) => t.completed).length;
+    const pending = total - completed;
     const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
 
     elements.progressBar.style.width = `${percentage}%`;
