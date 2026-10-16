@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TaskFlow — Professional, modern Task Manager Web App with real-time statistics, priority badges, due dates, filters, search, and dark mode." />
+  <title>TaskFlow — Smart Task & Productivity Manager</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="todolist.jpg" />
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="stylee.css" />
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- ====================================================================
+         1. Application Header
+         ==================================================================== -->
+    <header class="app-header">
+      <div class="brand-wrapper">
+        <div class="app-logo">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+        </div>
+        <div class="app-title-group">
+          <h1>TaskFlow</h1>
+          <p>Smart Task &amp; Productivity Manager</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <span class="date-badge" id="current-date-display" aria-label="Today's Date"></span>
+        <button class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Toggle Dark and Light theme" title="Toggle Theme">
+          <!-- Sun Icon (shown in dark mode) -->
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <!-- Moon Icon (shown in light mode) -->
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         2. Overview Statistics Dashboard
+         ==================================================================== -->
+    <section class="dashboard-grid" aria-label="Task Analytics Dashboard">
+      <!-- Total Tasks -->
+      <div class="stat-card">
+        <div class="stat-icon total">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value" id="total-tasks-count">0</span>
+          <span class="stat-label">Total Tasks</span>
+        </div>
+      </div>
+
+      <!-- Completed Tasks -->
+      <div class="stat-card">
+        <div class="stat-icon completed">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value" id="completed-tasks-count">0</span>
+          <span class="stat-label">Completed</span>
+        </div>
+      </div>
+
+      <!-- Pending Tasks -->
+      <div class="stat-card">
+        <div class="stat-icon pending">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value" id="pending-tasks-count">0</span>
+          <span class="stat-label">Pending</span>
+        </div>
+      </div>
+
+      <!-- Overdue Tasks -->
+      <div class="stat-card">
+        <div class="stat-icon overdue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value" id="overdue-tasks-count">0</span>
+          <span class="stat-label">Overdue</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Overall Progress Card -->
+    <section class="progress-card" aria-label="Task Completion Progress">
+      <div class="progress-header">
+        <div class="progress-title-group">
+          <span class="progress-title">Completion Rate</span>
+          <span class="progress-percent-badge" id="progress-percent">0%</span>
+        </div>
+        <span class="progress-message" id="progress-message">Loading progress...</span>
+      </div>
+      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         3. Task Creation Form Card
+         ==================================================================== -->
+    <section class="task-creator-card" aria-label="Add New Task">
+      <form id="task-form">
+        <div class="primary-input-row">
+          <div class="input-with-icon">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+            </span>
+            <input 
+              type="text" 
+              id="task-input" 
+              class="task-input" 
+              placeholder="What needs to be done? (Press Enter to add)" 
+              autocomplete="off" 
+              required 
+            />
+          </div>
+          <button type="submit" class="btn-primary" id="add-task-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Add Task</span>
+          </button>
+        </div>
+
+        <!-- Task Metadata Fields (Priority, Category, Due Date, Notes Toggle) -->
+        <div class="task-meta-row" style="margin-top: 14px;">
+          <div class="meta-field">
+            <label for="task-priority">Priority</label>
+            <select id="task-priority" class="meta-select">
+              <option value="high">🔴 High</option>
+              <option value="medium" selected>🟡 Medium</option>
+              <option value="low">🟢 Low</option>
+            </select>
+          </div>
+
+          <div class="meta-field">
+            <label for="task-category">Category</label>
+            <select id="task-category" class="meta-select">
+              <option value="Work" selected>💼 Work</option>
+              <option value="Personal">🏠 Personal</option>
+              <option value="Study">📚 Study</option>
+              <option value="Finance">💰 Finance</option>
+              <option value="Health">🏃 Health</option>
+              <option value="General">📝 General</option>
+            </select>
+          </div>
+
+          <div class="meta-field">
+            <label for="task-due-date">Due</label>
+            <input type="date" id="task-due-date" class="meta-date-input" title="Set task due date" />
+          </div>
+
+          <button type="button" class="btn-toggle-notes" id="toggle-notes-btn">
+            + Notes
+          </button>
+        </div>
+
+        <!-- Expandable Notes / Description Textarea -->
+        <div class="notes-container" id="notes-container" style="margin-top: 12px;">
+          <textarea 
+            id="task-notes" 
+            class="notes-textarea" 
+            placeholder="Add optional notes, links, or instructions..."
+            rows="2"
+          ></textarea>
+        </div>
+      </form>
+    </section>
+
+    <!-- ====================================================================
+         4. Control Toolbar (Search, Filter, Sort, Bulk Actions)
+         ==================================================================== -->
+    <section class="toolbar-card" aria-label="Task Filters &amp; Controls">
+      <!-- Search Input Row -->
+      <div class="toolbar-top-row">
+        <div class="search-box">
+          <span class="search-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+          <input 
+            type="text" 
+            id="search-input" 
+            class="search-input" 
+            placeholder="Search tasks by title, category, or notes... (Press '/' to focus)" 
+            autocomplete="off" 
+          />
+          <button class="search-clear-btn" id="search-clear-btn" title="Clear search" aria-label="Clear search">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters & Controls Row -->
+      <div class="toolbar-filter-row">
+        <!-- Status Tabs (All, Active, Completed) -->
+        <div class="filter-tabs" role="tablist">
+          <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">
+            All <span class="badge" id="badge-count-all">0</span>
+          </button>
+          <button class="filter-tab" data-filter="active" role="tab" aria-selected="false">
+            Active <span class="badge" id="badge-count-active">0</span>
+          </button>
+          <button class="filter-tab" data-filter="completed" role="tab" aria-selected="false">
+            Completed <span class="badge" id="badge-count-completed">0</span>
+          </button>
+        </div>
+
+        <!-- Dropdown Filters & Actions -->
+        <div class="filter-controls-group">
+          <!-- Priority Filter -->
+          <select id="priority-filter" class="filter-select" aria-label="Filter by priority">
+            <option value="all">All Priorities</option>
+            <option value="high">High Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="low">Low Priority</option>
+          </select>
+
+          <!-- Category Filter -->
+          <select id="category-filter" class="filter-select" aria-label="Filter by category">
+            <option value="all">All Categories</option>
+            <option value="Work">Work</option>
+            <option value="Personal">Personal</option>
+            <option value="Study">Study</option>
+            <option value="Finance">Finance</option>
+            <option value="Health">Health</option>
+            <option value="General">General</option>
+          </select>
+
+          <!-- Sort Dropdown -->
+          <select id="sort-by-select" class="filter-select" aria-label="Sort tasks">
+            <option value="due-asc">Due Date: Soonest</option>
+            <option value="due-desc">Due Date: Furthest</option>
+            <option value="priority-high">Priority: High → Low</option>
+            <option value="priority-low">Priority: Low → High</option>
+            <option value="newest">Created: Newest</option>
+            <option value="oldest">Created: Oldest</option>
+            <option value="alpha">Alphabetical: A → Z</option>
+          </select>
+
+          <!-- Bulk Buttons -->
+          <button class="btn-secondary" id="reset-demo-btn" title="Reload sample demonstration tasks">
+            Sample Demo
+          </button>
+          <button class="btn-danger-ghost" id="clear-completed-btn" title="Remove all completed tasks">
+            Clear Done
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         5. Task List Container
+         ==================================================================== -->
+    <section class="task-list-section" aria-label="Tasks List">
+      <div class="task-list-header">
+        <span class="task-list-count" id="task-list-summary">Showing 0 tasks</span>
+      </div>
+
+      <!-- Task Items List -->
+      <ul id="task-list" class="task-list" aria-live="polite"></ul>
+
+      <!-- Empty State Indicator -->
+      <div class="empty-state" id="empty-state" style="display: none;">
+        <div class="empty-state-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <h3 class="empty-state-title" id="empty-state-title">No tasks found</h3>
+        <p class="empty-state-desc" id="empty-state-desc">Your tasks will appear here. Add a new task above to get started!</p>
+        <button class="btn-primary empty-state-action" id="empty-state-action-btn">
+          Add New Task
+        </button>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         6. Footer & Shortcut Guide
+         ==================================================================== -->
+    <footer class="app-footer">
+      <div class="shortcut-hints">
+        <span class="kbd-hint"><kbd>Enter</kbd> to add task</span>
+        <span class="kbd-hint"><kbd>/</kbd> to search</span>
+        <span class="kbd-hint"><kbd>Esc</kbd> to close dialogs</span>
+        <span class="kbd-hint">Auto-saves to <strong>localStorage</strong></span>
+      </div>
+      <p style="margin-top: 6px;">TaskFlow &copy; Modern Vanilla JS Task Manager &bull; Fast, Accessible, Framework-Free</p>
+    </footer>
+
+  </div>
+
+  <!-- ======================================================================
+       7. Edit Task Modal Dialog
+       ====================================================================== -->
+  <div class="modal-overlay" id="edit-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h2 class="modal-title" id="edit-modal-title">Edit Task</h2>
+        <button class="modal-close-btn" id="edit-modal-close" aria-label="Close Edit Dialog">&times;</button>
+      </div>
+      
+      <form id="edit-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="edit-title-input">Task Title *</label>
+            <input type="text" id="edit-title-input" class="form-input" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="edit-desc-input">Notes / Details</label>
+            <textarea id="edit-desc-input" class="form-textarea" rows="3" placeholder="Add additional task details..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="edit-priority-select">Priority</label>
+              <select id="edit-priority-select" class="form-select">
+                <option value="high">🔴 High</option>
+                <option value="medium">🟡 Medium</option>
+                <option value="low">🟢 Low</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="edit-category-select">Category</label>
+              <select id="edit-category-select" class="form-select">
+                <option value="Work">💼 Work</option>
+                <option value="Personal">🏠 Personal</option>
+                <option value="Study">📚 Study</option>
+                <option value="Finance">💰 Finance</option>
+                <option value="Health">🏃 Health</option>
+                <option value="General">📝 General</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="edit-due-date-input">Due Date</label>
+            <input type="date" id="edit-due-date-input" class="form-input" />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="edit-modal-cancel">Cancel</button>
+          <button type="submit" class="btn-primary" id="edit-modal-save">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       8. Delete Confirmation Modal
+       ====================================================================== -->
+  <div class="modal-overlay" id="confirm-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+    <div class="modal-container" style="max-width: 420px;">
+      <div class="modal-header">
+        <h2 class="modal-title" id="confirm-modal-title">Delete Task</h2>
+        <button class="modal-close-btn" id="confirm-modal-close" aria-label="Close Confirmation Dialog">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-modal-text" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5;">
+          Are you sure you want to delete this task? This action cannot be undone.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="confirm-modal-cancel">Cancel</button>
+        <button type="button" class="btn-primary" id="confirm-delete-btn" style="background: var(--color-danger);">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       9. Floating Toast Notification Container
+       ====================================================================== -->
+  <div class="toast-container" id="toast-container" aria-live="assertive"></div>
+
+  <!-- Main JavaScript File -->
+  <script src="script.js"></script>
+</body>
+</html>
